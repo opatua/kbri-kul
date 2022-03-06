@@ -9,7 +9,7 @@ kbri_service = KbriService()
 response_service = ResponseService()
 
 
-@router.get("")
+@router.get("/")
 def get_schedule(request: Request, limit: int = 1):
     return response_service.to_response(
         request,
