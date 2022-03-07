@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
     KBRI_HOST: str
+    REDIS_HOST: str
 
     @validator('BACKEND_CORS_ORIGINS', pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
