@@ -12,6 +12,7 @@ class KbriService:
     default_slot_limit = 5
     redis_service = RedisService()
     kbri_cache_key = 'kbri_cache'
+    expire_cache = timedelta(seconds=3600)
 
     async def get_schedule(self, slot_limit: Optional[int]) -> Optional[Dict[str, Any]]:
         redis = self.redis_service.initialize_redis()
@@ -57,7 +58,7 @@ class KbriService:
             if len(slots) == limit:
                 await redis.setex(
                     self.kbri_cache_key,
-                    timedelta(minutes=1),
+                    self.expire_cache,
                     json.dumps(slots),
                 )
 
