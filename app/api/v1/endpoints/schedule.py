@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 from fastapi import APIRouter, HTTPException, Request
 from http import HTTPStatus
 
@@ -34,11 +35,13 @@ async def post_telegram_webhook(request: Request):
     data = json.loads(data.decode('utf-8'))
 
     try:
-        third_party_service.call(
-            'GET',
-            f"{settings.TELEGRAM_URL}/bot{settings.TELEGRAM_KEY}/sendMessage?chat_id={data['message']['chat']['id']}&text={await get_message(data['message']['text'])}",
-            {}
-        )
+        message = await get_message(data['message']['text'])
+        if message:
+            third_party_service.call(
+                'GET',
+                f"{settings.TELEGRAM_URL}/bot{settings.TELEGRAM_KEY}/sendMessage?chat_id={data['message']['chat']['id']}&text={message}",
+                {}
+            )
     except Exception as exception:
         print(exception)
 
@@ -48,7 +51,18 @@ async def post_telegram_webhook(request: Request):
     )
 
 
-async def get_message(text: str) -> str:
+async def get_message(text: str) -> Optional[str]:
+    if '/' not in text:
+        return None
+
+    if '/start' in text:
+        return '''Hello, This is bot to get available slots to book appointment at Indonesian Embassy Kuala Lumpur.
+Below the commands you can use:
+/next : To get nearest available date
+/get5 : To get 5 available dates
+/get10 : To get 10 available dates
+'''
+
     if text not in [
         '/next',
         '/next@kbrikul_bot',
