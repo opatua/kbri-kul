@@ -1,13 +1,12 @@
 import json
-from typing import Optional
 from fastapi import APIRouter, HTTPException, Request
 from http import HTTPStatus
+from typing import Optional
 
-from app.core.config import settings
-from app.api.v1.services.kbri_service import KbriService
 from app.api.v1.services.kbri_service import KbriService
 from app.api.v1.services.response_service import ResponseService
 from app.api.v1.services.third_party_service import ThirdPartyService
+from app.core.config import settings
 
 router = APIRouter()
 kbri_service = KbriService()
