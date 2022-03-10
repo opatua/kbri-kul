@@ -58,7 +58,7 @@ class KbriService:
             slots.append(
                 {
                     'date' : date_,
-                    'time': ','.join(response[1]),
+                    'time': ', '.join(response[1]),
                 },
             )
 
